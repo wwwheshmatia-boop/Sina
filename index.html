@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<!-- صفحه ورود -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-icon">🔒</div>
@@ -19,6 +20,7 @@
   </div>
 </div>
 
+<!-- اپ اصلی -->
 <div id="mainApp" style="display:none">
   <header>
     <h1>🍎 حساب‌داری میدان تره‌بار</h1>
@@ -29,6 +31,7 @@
     <button onclick="showPage('buy', this)">خرید</button>
     <button onclick="showPage('sell', this)">فروش</button>
     <button onclick="showPage('report', this)">گزارش</button>
+    <button onclick="showPage('match', this)">🔗 تطبیق نام‌ها</button>
     <button onclick="showPage('backup', this)">پشتیبان</button>
     <button onclick="changePass()" style="border-color:#ef9a9a;color:#c62828">🔑 تغییر رمز</button>
     <button onclick="logout()" style="border-color:#ef9a9a;color:#c62828">🚪 خروج</button>
@@ -128,12 +131,34 @@
       <div id="hotelBox"></div>
     </section>
 
+    <section id="match" class="page">
+      <h2>🔗 تطبیق نام میوه‌ها</h2>
+      <div class="backup-box">
+        <h3>میوه‌ای که توی سیستم ثبت شده را به یک نام اصلی وصل کن</h3>
+        <p>مثلاً «قارچ بسته بندی ملارد» را به «قارچ» وصل کن تا با هم یکی حساب بشن و موجودی منفی نشه.</p>
+        
+        <label>نام ثبت‌شده در سیستم (خرید یا فروش):</label>
+        <select id="matchFrom">
+          <option value="">در حال بارگذاری...</option>
+        </select>
+
+        <label>نام اصلی (که می‌خوای همه با اون یکی بشن):</label>
+        <input type="text" id="matchTo" placeholder="مثلاً: قارچ">
+
+        <button onclick="addMatch()" class="backup-btn" style="margin-top:10px">ثبت تطبیق</button>
+      </div>
+
+      <h3 style="margin-top:1.5rem;color:#2e7d32">لیست تطبیق‌های فعلی:</h3>
+      <div id="matchListBox" style="background:white; padding:1rem; border-radius:1rem; margin-top:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+      </div>
+    </section>
+
     <section id="backup" class="page">
       <h2>💾 پشتیبان‌گیری و بازیابی</h2>
 
       <div class="backup-box">
         <h3>خروجی گرفتن</h3>
-        <p>همه داده‌های خرید و فروش رو به فایل JSON یا اکسل ذخیره کن</p>
+        <p>همه داده‌های خرید، فروش و تطبیق‌ها را ذخیره کن</p>
         <button onclick="exportJSON()" class="backup-btn">📥 خروجی JSON</button>
         <button onclick="exportExcel()" class="backup-btn">📊 خروجی اکسل</button>
       </div>
