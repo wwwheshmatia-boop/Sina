@@ -174,7 +174,7 @@ function clearAll() {
   alert('همه داده‌ها پاک شد');
 }
 
-/* ---------- آپلود اکسل فروش ---------- */
+/* ---------- آپلود اکسل (نسخه نهایی و اصلاح‌شده برای فایل شما) ---------- */
 function importExcel() {
   const file = document.getElementById('excelFile').files[0];
   if (!file) return alert('اول فایل اکسل رو انتخاب کن');
@@ -185,28 +185,42 @@ function importExcel() {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      
+      // خواندن ردیف‌ها
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
 
-      rows.shift();
       const sells = DB.get('sells');
       let added = 0;
 
-      rows.forEach((r, i) => {
-        if (!r || !r[0] || !r[2]) return;
-        sells.push({
-          id: Date.now() + i,
-          date: String(r[0]).trim(),
-          hotel: String(r[1] || '').trim(),
-          fruit: String(r[2]).trim(),
-          weight: parseFloat(r[3]) || 0,
-          price: parseFloat(r[4]) || 0
-        });
-        added++;
-      });
+      // شروع از ردیف سوم
+      for (let i = 2; i < rows.length; i++) {
+        const r = rows[i];
+        if (!r || r.length < 13) continue;
+
+        // ستون‌های دقیق بر اساس فایل شما
+        const dateVal = String(r[3]).trim();       // D: تاریخ
+        const hotelVal = String(r[5]).trim();      // F: هتل
+        const fruitVal = String(r[6]).trim();      // G: میوه
+        const weightVal = parseFloat(r[11]) || 0;  // L: وزن
+        const priceVal = parseFloat(r[12]) || 0;   // M: فی
+
+        // اگر تاریخ و میوه معتبر بودن، اضافه کن
+        if (dateVal && fruitVal && weightVal > 0) {
+          sells.push({
+            id: Date.now() + i,
+            date: dateVal,
+            hotel: hotelVal || 'نامشخص',
+            fruit: fruitVal,
+            weight: weightVal,
+            price: priceVal
+          });
+          added++;
+        }
+      }
 
       DB.set('sells', sells);
       renderSell();
-      alert(`✅ ${added} ردیف فروش اضافه شد`);
+      alert(`✅ ${added} ردیف فروش با موفقیت اضافه شد`);
       document.getElementById('excelFile').value = '';
     } catch (err) {
       alert('خطا در خواندن فایل: ' + err.message);
@@ -273,7 +287,6 @@ function debugDates() {
   const dates = [...new Set(sells.map(s => s.date))].sort();
   const today = todayJalali();
   const yesterday = daysAgoJalali(1);
-
   const todayCount = sells.filter(s => s.date === today).length;
   const yesterdayCount = sells.filter(s => s.date === yesterday).length;
 
@@ -298,7 +311,6 @@ function fillFilters() {
   const sells = DB.get('sells');
   const hotels = [...new Set(sells.map(s => s.hotel).filter(Boolean))];
   const fruits = [...new Set(sells.map(s => s.fruit).filter(Boolean))];
-
   const hSel = document.getElementById('filterHotel');
   const fSel = document.getElementById('filterFruit');
   if (!hSel || !fSel) return;
@@ -489,13 +501,12 @@ function renderChart(sells) {
   });
 }
 
-/* ---------- PDF یکپارچه ---------- */
+/* ---------- PDF ---------- */
 function buildPDFHtml(sells, title, subtitle) {
   const today = todayJalali();
   const hotels = [...new Set(sells.map(s => s.hotel).filter(Boolean))];
   const totalProfit = calcProfit(sells);
 
-  // بخش هر هتل با جزئیات فروش
   let hotelsHtml = '';
   if (!hotels.length) {
     hotelsHtml = '<p style="text-align:center;padding:10px;color:#999">داده‌ای نیست</p>';
@@ -553,7 +564,6 @@ function buildPDFHtml(sells, title, subtitle) {
     }).join('');
   }
 
-  // بخش موجودی میوه‌ها
   const allFruits = [...new Set([
     ...DB.get('buys').map(b => b.fruit),
     ...sells.map(s => s.fruit)
