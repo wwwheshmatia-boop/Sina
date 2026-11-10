@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حساب‌داری میدان تره‌بار</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-icon">🔒</div>
+    <h2>ورود به سیستم</h2>
+    <p id="loginHint">رمز عبور را وارد کنید</p>
+    <input type="password" id="loginPass" placeholder="رمز عبور" onkeydown="if(event.key==='Enter')tryLogin()">
+    <button onclick="tryLogin()">ورود</button>
+    <p id="loginError" class="login-error"></p>
+  </div>
+</div>
+
+<div id="mainApp" style="display:none">
+  <header>
+    <h1>🍎 حساب‌داری میدان تره‌بار</h1>
+  </header>
+
+  <nav>
+    <button class="active" onclick="showPage('dashboard', this)">داشبورد</button>
+    <button onclick="showPage('buy', this)">خرید</button>
+    <button onclick="showPage('sell', this)">فروش</button>
+    <button onclick="showPage('report', this)">گزارش</button>
+    <button onclick="showPage('match', this)">🔗 تطبیق نام‌ها</button>
+    <button onclick="showPage('backup', this)">پشتیبان</button>
+    <button onclick="changePass()" style="border-color:#ef9a9a;color:#c62828">🔑 تغییر رمز</button>
+    <button onclick="logout()" style="border-color:#ef9a9a;color:#c62828">🚪 خروج</button>
+  </nav>
+
+  <main>
+    <section id="dashboard" class="page active">
+      <h2>داشبورد</h2>
+      <button onclick="debugDates()" style="background:#ff9800;color:white;border:none;padding:0.5rem 1rem;border-radius:0.6rem;font-weight:bold;margin-bottom:0.8rem">🔍 نمایش تاریخ‌ها</button>
+      <div class="cards">
+        <div class="card">
+          <span>سود امروز</span>
+          <strong id="todayProfit">۰</strong>
+          <small id="todayChange" class="change"></small>
+        </div>
+        <div class="card">
+          <span>سود این هفته</span>
+          <strong id="weekProfit">۰</strong>
+          <small id="weekChange" class="change"></small>
+        </div>
+        <div class="card">
+          <span>سود این ماه</span>
+          <strong id="monthProfit">۰</strong>
+          <small id="monthChange" class="change"></small>
+        </div>
+      </div>
+      <h2 style="margin-top:1.5rem">موجودی میوه‌ها</h2>
+      <div id="stockBox"></div>
+    </section>
+
+    <section id="buy" class="page">
+      <h2>ثبت خرید</h2>
+      <form id="buyForm">
+        <label>تاریخ (شمسی):</label>
+        <input type="text" id="buyDate" placeholder="مثلاً 1403/08/15" required>
+        <input type="text" id="buyFruit" placeholder="نام میوه" required>
+        <input type="number" id="buyWeight" placeholder="وزن (کیلو)" step="0.01" required>
+        <input type="number" id="buyPrice" placeholder="فی خرید (ریال)" required>
+        <button type="submit">ثبت خرید</button>
+      </form>
+      <ul id="buyList"></ul>
+    </section>
+
+    <section id="sell" class="page">
+      <h2>ثبت فروش</h2>
+      <div class="upload-box">
+        <h3>📂 آپلود اکسل فروش</h3>
+        <p>ستون‌ها: تاریخ | نام هتل | نام میوه | وزن | فی فروش (ریال)</p>
+        <input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
+        <button onclick="importExcel()">آپلود و ثبت</button>
+      </div>
+
+      <h3 style="margin-top:1.5rem;color:#2e7d32;font-size:0.95rem">یا ثبت دستی:</h3>
+      <form id="sellForm">
+        <label>تاریخ (شمسی):</label>
+        <input type="text" id="sellDate" placeholder="مثلاً 1403/08/15" required>
+        <input type="text" id="sellHotel" placeholder="نام هتل / مشتری" required>
+        <input type="text" id="sellFruit" placeholder="نام میوه" required>
+        <input type="number" id="sellWeight" placeholder="وزن (کیلو)" step="0.01" required>
+        <input type="number" id="sellPrice" placeholder="فی فروش (ریال)" required>
+        <button type="submit">ثبت فروش دستی</button>
+      </form>
+      <ul id="sellList"></ul>
+    </section>
+
+    <section id="report" class="page">
+      <h2>گزارش سود</h2>
+      <div class="report-actions">
+        <button id="pdfBtn" onclick="downloadPDF()">📄 دانلود PDF</button>
+        <button id="pdfWeekBtn" onclick="downloadPDFWeek()">📅 PDF هفتگی</button>
+        <button id="pdfMonthBtn" onclick="downloadPDFMonth()">🗓️ PDF ماهانه</button>
+        <button id="pdfDayBtn" onclick="downloadPDFDay()">📆 PDF روزانه</button>
+        <button id="clearBtn" onclick="clearAll()">🗑️ پاک کردن همه داده‌ها</button>
+      </div>
+
+      <div class="filter-box">
+        <h3>🔍 فیلتر و جستجو</h3>
+        <label>هتل:</label>
+        <select id="filterHotel" onchange="renderReport()">
+          <option value="">همه هتل‌ها</option>
+        </select>
+        <label>میوه:</label>
+        <select id="filterFruit" onchange="renderReport()">
+          <option value="">همه میوه‌ها</option>
+        </select>
+        <label>از تاریخ:</label>
+        <input type="text" id="filterFrom" placeholder="مثلاً 1403/08/15" onchange="renderReport()">
+        <label>تا تاریخ:</label>
+        <input type="text" id="filterTo" placeholder="مثلاً 1403/08/20" onchange="renderReport()">
+        <button onclick="resetFilter()" class="reset-btn">پاک کردن فیلتر</button>
+      </div>
+
+      <h2 style="margin-top:1.5rem">📈 نمودار سود روزانه</h2>
+      <div class="chart-box"><canvas id="profitChart"></canvas></div>
+
+      <h2 style="margin-top:1.5rem">🏨 تفکیک بر اساس هتل</h2>
+      <div id="hotelBox"></div>
+    </section>
+
+    <section id="match" class="page">
+      <h2>🔗 تطبیق نام میوه‌ها</h2>
+      <div class="backup-box">
+        <h3>میوه‌ای که توی سیستم ثبت شده را به یک نام اصلی وصل کن</h3>
+        <p>مثلاً «قارچ بسته بندی ملارد» را به «قارچ» وصل کن تا با هم یکی حساب بشن.</p>
+        <label>نام ثبت‌شده در سیستم:</label>
+        <select id="matchFrom"></select>
+        <label>نام اصلی:</label>
+        <input type="text" id="matchTo" placeholder="مثلاً: قارچ">
+        <button onclick="addMatch()" class="backup-btn" style="margin-top:10px">ثبت تطبیق</button>
+      </div>
+      <h3 style="margin-top:1.5rem;color:#2e7d32">لیست تطبیق‌های فعلی:</h3>
+      <div id="matchListBox" style="background:white; padding:1rem; border-radius:1rem; margin-top:0.5rem; box-shadow:0 2px 8px rgba(0,0,0,0.08)"></div>
+    </section>
+
+    <section id="backup" class="page">
+      <h2>💾 پشتیبان‌گیری و بازیابی</h2>
+      <div class="backup-box">
+        <h3>خروجی گرفتن</h3>
+        <button onclick="exportJSON()" class="backup-btn">📥 خروجی JSON</button>
+        <button onclick="exportExcel()" class="backup-btn">📊 خروجی اکسل</button>
+      </div>
+      <div class="backup-box">
+        <h3>بازیابی از فایل</h3>
+        <input type="file" id="restoreFile" accept=".json">
+        <button onclick="restoreJSON()" class="restore-btn">📤 بازیابی داده‌ها</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="xlsx.full.min.js"></script>
+<script src="html2pdf.bundle.min.js"></script>
+<script src="chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
