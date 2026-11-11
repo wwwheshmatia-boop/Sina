@@ -1,0 +1,209 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, 'Vazir', sans-serif; }
+
+body { background: #f4f7f4; color: #1b3a1b; padding-bottom: 2rem; }
+
+header {
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white; padding: 1.2rem; text-align: center;
+  border-radius: 0 0 1.5rem 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+h1 { font-size: 1.2rem; }
+h2 { font-size: 1rem; margin-bottom: 0.8rem; color: #2e7d32; }
+
+label {
+  font-size: 0.78rem; color: #2e7d32; font-weight: bold;
+  margin-top: 0.3rem; margin-bottom: 0.2rem;
+  display: block;
+}
+
+nav {
+  display: flex; gap: 0.4rem; padding: 0.8rem;
+  overflow-x: auto; justify-content: center; flex-wrap: wrap;
+}
+nav button {
+  background: white; border: 2px solid #a5d6a7; color: #2e7d32;
+  padding: 0.5rem 0.9rem; border-radius: 2rem;
+  font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: 0.2s;
+  white-space: nowrap;
+}
+nav button.active, nav button:hover { background: #2e7d32; color: white; }
+
+main { padding: 1rem; }
+.page { display: none; }
+.page.active { display: block; }
+
+.cards { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-top: 0.8rem; }
+.card {
+  background: white; border-radius: 1rem; padding: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex; flex-direction: column; gap: 0.4rem;
+  border-right: 5px solid #66bb6a;
+}
+.card span { font-size: 0.8rem; color: #666; }
+.card strong { font-size: 1.3rem; color: #2e7d32; }
+
+.change { font-size: 0.78rem; font-weight: bold; margin-top: 0.3rem; display: block; }
+.change.up { color: #2e7d32; }
+.change.down { color: #c62828; }
+.change.neutral { color: #999; }
+
+form {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  background: white; padding: 1rem; border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 0.8rem;
+}
+input, select {
+  padding: 0.7rem; border: 1.5px solid #c8e6c9; border-radius: 0.6rem;
+  font-size: 0.9rem; outline: none; background: white;
+}
+input:focus, select:focus { border-color: #2e7d32; }
+form button {
+  background: #2e7d32; color: white; border: none;
+  padding: 0.8rem; border-radius: 0.6rem; font-size: 0.95rem;
+  font-weight: bold; cursor: pointer;
+}
+form button:hover { background: #1b5e20; }
+
+ul { list-style: none; margin-top: 1rem; }
+ul li {
+  background: white; padding: 0.7rem 1rem; border-radius: 0.7rem;
+  margin-bottom: 0.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center;
+}
+ul li .del {
+  background: #ffebee; color: #c62828; border: none; border-radius: 0.4rem;
+  padding: 0.3rem 0.6rem; cursor: pointer; font-size: 0.75rem;
+}
+
+#reportBox, #stockBox {
+  background: white; padding: 1rem; border-radius: 1rem;
+  margin-top: 0.8rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.report-row {
+  display: flex; justify-content: space-between; padding: 0.6rem 0;
+  border-bottom: 1px dashed #e0e0e0; font-size: 0.85rem;
+}
+.report-row:last-child { border: none; }
+.report-row strong { color: #2e7d32; }
+
+.report-row.negative-row {
+  background: #e3f2fd; padding: 0.6rem 0.8rem; border-radius: 0.5rem; margin: 0.2rem 0;
+}
+.report-row.negative-row strong { color: #0d47a1; }
+
+.report-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
+.report-actions button, .backup-btn, .restore-btn {
+  border: none; padding: 0.7rem 1.2rem; border-radius: 0.7rem;
+  font-weight: bold; cursor: pointer; font-size: 0.85rem;
+}
+#pdfBtn { background: #ef6c00; color: white; }
+#pdfBtn:hover { background: #e65100; }
+#pdfWeekBtn { background: #1976d2; color: white; }
+#pdfWeekBtn:hover { background: #0d47a1; }
+#pdfMonthBtn { background: #7b1fa2; color: white; }
+#pdfMonthBtn:hover { background: #4a148c; }
+#pdfDayBtn { background: #00897b; color: white; }
+#pdfDayBtn:hover { background: #00695c; }
+#clearBtn { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+#clearBtn:hover { background: #ffcdd2; }
+
+.badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 0.5rem; font-size: 0.7rem; font-weight: bold; }
+.badge.ok { background: #e8f5e9; color: #2e7d32; }
+.badge.out { background: #ffebee; color: #c62828; }
+.badge.negative { background: #e3f2fd; color: #0d47a1; }
+
+.upload-box, .filter-box, .backup-box {
+  background: white; padding: 1rem; border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 0.8rem;
+}
+.upload-box h3, .filter-box h3, .backup-box h3 {
+  font-size: 0.95rem; color: #2e7d32; margin-bottom: 0.5rem;
+}
+.upload-box p, .backup-box p { font-size: 0.75rem; color: #666; margin-bottom: 0.7rem; }
+.upload-box input[type="file"], .backup-box input[type="file"] {
+  width: 100%; padding: 0.5rem; border: 1.5px dashed #a5d6a7;
+  border-radius: 0.6rem; font-size: 0.8rem; margin-bottom: 0.6rem;
+}
+.upload-box button {
+  background: #2e7d32; color: white; border: none;
+  padding: 0.7rem 1.2rem; border-radius: 0.6rem;
+  font-weight: bold; cursor: pointer; font-size: 0.85rem; width: 100%;
+}
+.backup-btn { background: #2e7d32; color: white; width: 100%; margin-bottom: 0.5rem; }
+.backup-btn:hover { background: #1b5e20; }
+.restore-btn { background: #1976d2; color: white; width: 100%; }
+.restore-btn:hover { background: #0d47a1; }
+
+.filter-box label { display: block; font-size: 0.75rem; color: #666; margin-top: 0.5rem; margin-bottom: 0.3rem; }
+.filter-box input, .filter-box select { width: 100%; margin-bottom: 0.4rem; }
+.filter-box .reset-btn {
+  background: #ffebee; color: #c62828; border: 1px solid #ef9a9a;
+  padding: 0.6rem 1rem; border-radius: 0.6rem; font-size: 0.8rem;
+  font-weight: bold; cursor: pointer; width: 100%; margin-top: 0.5rem;
+}
+.filter-box .reset-btn:hover { background: #ffcdd2; }
+
+.chart-box {
+  background: white; padding: 1rem; border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 0.8rem;
+  height: 260px;
+}
+
+.hotel-card {
+  background: white; border-radius: 1rem; padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 0.8rem;
+  border-right: 5px solid #66bb6a;
+}
+.hotel-card h3 { color: #2e7d32; font-size: 0.95rem; margin-bottom: 0.6rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e0e0e0; }
+.hotel-card table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.hotel-card th { background: #e8f5e9; color: #2e7d32; padding: 0.4rem; text-align: right; font-weight: bold; }
+.hotel-card td { padding: 0.4rem; border-bottom: 1px dashed #e0e0e0; }
+.hotel-card .summary { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 2px solid #66bb6a; font-size: 0.82rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; }
+.hotel-card .summary strong { color: #2e7d32; }
+
+/* ---------- حاشیه سود ---------- */
+.margin-card { background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 0.8rem; }
+.margin-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px dashed #e0e0e0; font-size: 0.85rem; }
+.margin-row:last-child { border: none; }
+.margin-bar-bg { flex: 1; height: 8px; background: #e0e0e0; border-radius: 4px; margin: 0 10px; overflow: hidden; }
+.margin-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.margin-pct { font-weight: bold; font-size: 0.8rem; width: 50px; text-align: left; }
+
+/* ---------- انیمیشن چشمک زدن برای هشدار تحلیل داده ---------- */
+@keyframes warningPulse {
+  0% {
+    background-color: #ffebee; /* پس زمینه قرمز روشن */
+  }
+  50% {
+    background-color: #ffffff; /* پس زمینه سفید */
+  }
+  100% {
+    background-color: #ffebee;
+  }
+}
+
+.blink-warning {
+  animation: warningPulse 2s ease-in-out infinite; /* ۲ ثانیه یکبار، آروم */
+  border: 2px solid #ffcdd2; /* حاشیه ثابت برای زیبایی */
+}
+
+/* ---------- صفحه ورود ---------- */
+#loginScreen {
+  position: fixed; inset: 0; z-index: 1000;
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+}
+.login-box {
+  background: white; padding: 2rem 1.5rem; border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  width: 100%; max-width: 320px; text-align: center;
+}
+.login-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.login-box h2 { color: #2e7d32; font-size: 1.1rem; margin-bottom: 0.4rem; }
+.login-box p { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
+.login-box input { width: 100%; padding: 0.8rem; border: 2px solid #c8e6c9; border-radius: 0.7rem; font-size: 1rem; text-align: center; margin-bottom: 0.7rem; outline: none; }
+.login-box input:focus { border-color: #2e7d32; }
+.login-box button { width: 100%; background: #2e7d32; color: white; border: none; padding: 0.8rem; border-radius: 0.7rem; font-size: 1rem; font-weight: bold; cursor: pointer; }
+.login-box button:hover { background: #1b5e20; }
+.login-error { color: #c62828 !important; font-size: 0.8rem; margin-top: 0.5rem; min-height: 1rem; }
