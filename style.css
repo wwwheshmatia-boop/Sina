@@ -1,0 +1,283 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, 'Vazir', sans-serif; }
+
+body { 
+  background: #f0f2f5; /* خاکستری روشن حرفه‌ای */
+  color: #1e293b; 
+  padding-bottom: 2rem; 
+  min-height: 100vh;
+}
+
+header {
+  background: linear-gradient(135deg, #1e293b, #0f172a); /* آبی تیره */
+  color: white; padding: 1.2rem; 
+  display: flex; justify-content: space-between; align-items: center;
+  border-radius: 0 0 1.5rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(15,23,42,0.4);
+  position: relative;
+}
+h1 { font-size: 1.1rem; font-weight: bold; letter-spacing: 0.5px; }
+h2 { font-size: 1rem; margin-bottom: 0.8rem; color: #334155; }
+
+.menu-toggle {
+  background: rgba(255,255,255,0.15); border: none; color: white;
+  font-size: 1.4rem; padding: 0.3rem 0.8rem; border-radius: 0.6rem;
+  cursor: pointer; transition: 0.2s;
+}
+.menu-toggle:hover { background: rgba(255,255,255,0.3); }
+
+.main-menu {
+  display: none;
+  position: fixed; top: 70px; left: 1rem; right: 1rem;
+  background: #1e293b; border-radius: 1rem; padding: 0.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 999;
+  max-width: 350px; margin: 0 auto;
+  animation: slideDown 0.2s ease;
+}
+.main-menu.show { display: block; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.menu-item {
+  padding: 0.9rem 1rem; border-radius: 0.6rem; font-size: 0.9rem;
+  font-weight: bold; color: #cbd5e1; cursor: pointer; transition: 0.2s;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-item:hover { background: #334155; color: white; }
+.menu-item.logout-item { color: #f87171; border-top: 2px solid rgba(248,113,113,0.3); margin-top: 0.3rem; }
+
+label {
+  font-size: 0.78rem; color: #475569; font-weight: bold;
+  margin-top: 0.3rem; margin-bottom: 0.2rem;
+  display: block;
+}
+
+main { padding: 1rem; }
+.page { display: none; animation: fadeIn 0.3s; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.cards { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-top: 0.8rem; }
+.card {
+  background: #ffffff; border-radius: 1rem; padding: 1.1rem;
+  box-shadow: 0 4px 15px rgba(15,23,42,0.08);
+  display: flex; flex-direction: column; gap: 0.4rem;
+  border-right: 5px solid #3b82f6; /* آبی */
+}
+.card span { font-size: 0.8rem; color: #64748b; }
+.card strong { font-size: 1.3rem; color: #1e293b; }
+
+.change { font-size: 0.78rem; font-weight: bold; margin-top: 0.3rem; display: block; }
+.change.up { color: #16a34a; }
+.change.down { color: #dc2626; }
+.change.neutral { color: #94a3b8; }
+
+/* کارت‌های موجودی (با تم آبی) */
+.stock-summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
+.stock-summary-card {
+  background: white; border-radius: 1rem; padding: 0.8rem 0.5rem;
+  text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 3px 10px rgba(15,23,42,0.08); border-top: 4px solid #ccc;
+}
+.stock-summary-card:active { transform: scale(0.95); }
+.stock-summary-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(15,23,42,0.15); }
+.stock-summary-card.out { border-top-color: #dc2626; }
+.stock-summary-card.ok { border-top-color: #16a34a; }
+.stock-summary-card.negative { border-top-color: #2563eb; }
+.stock-summary-card .icon { font-size: 1.5rem; margin-bottom: 0.2rem; }
+.stock-summary-card .title { font-size: 0.7rem; color: #64748b; font-weight: bold; }
+.stock-summary-card .count { font-size: 1.2rem; font-weight: bold; margin-top: 0.2rem; }
+.stock-summary-card.out .count { color: #dc2626; }
+.stock-summary-card.ok .count { color: #16a34a; }
+.stock-summary-card.negative .count { color: #2563eb; }
+
+/* فرم‌ها */
+form {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  background: #ffffff; padding: 1rem; border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(15,23,42,0.08); margin-top: 0.8rem;
+}
+input, select {
+  padding: 0.7rem; border: 1.5px solid #cbd5e1; border-radius: 0.6rem;
+  font-size: 0.9rem; outline: none; background: #f8fafc; transition: 0.2s;
+  color: #1e293b;
+}
+input:focus, select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); background: white; }
+form button {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none;
+  padding: 0.8rem; border-radius: 0.6rem; font-size: 0.95rem;
+  font-weight: bold; cursor: pointer; transition: 0.2s;
+  box-shadow: 0 4px 10px rgba(37,99,235,0.3);
+}
+form button:hover { background: linear-gradient(135deg, #1d4ed8, #1e40af); transform: translateY(-1px); }
+
+/* لیست‌ها */
+ul { list-style: none; margin-top: 1rem; }
+ul li {
+  background: white; padding: 0.7rem 1rem; border-radius: 0.7rem;
+  margin-bottom: 0.5rem; box-shadow: 0 2px 6px rgba(15,23,42,0.06);
+  font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center;
+  border-right: 3px solid #e2e8f0;
+}
+ul li .del { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 0.4rem; padding: 0.3rem 0.6rem; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
+
+/* باکس‌های گزارش */
+#reportBox, #stockBox { background: white; padding: 1rem; border-radius: 1rem; margin-top: 0.8rem; box-shadow: 0 4px 15px rgba(15,23,42,0.08); }
+.report-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.85rem; }
+.report-row:last-child { border: none; }
+.report-row strong { color: #1e293b; }
+.report-row.negative-row { background: #eff6ff; padding: 0.6rem 0.8rem; border-radius: 0.5rem; margin: 0.2rem 0; }
+.report-row.negative-row strong { color: #1d4ed8; }
+
+/* دکمه‌های عملیات */
+.report-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
+.report-actions button, .backup-btn, .restore-btn { border: none; padding: 0.7rem 1.2rem; border-radius: 0.7rem; font-weight: bold; cursor: pointer; font-size: 0.85rem; transition: 0.2s; }
+#pdfBtn { background: linear-gradient(135deg, #ea580c, #c2410c); color: white; }
+#pdfBtn:hover { background: #9a3412; }
+#pdfWeekBtn { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; }
+#pdfWeekBtn:hover { background: #1e40af; }
+#pdfMonthBtn { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: white; }
+#pdfMonthBtn:hover { background: #5b21b6; }
+#pdfDayBtn { background: linear-gradient(135deg, #0d9488, #0f766e); color: white; }
+#pdfDayBtn:hover { background: #115e59; }
+#clearBtn { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+.badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 0.5rem; font-size: 0.7rem; font-weight: bold; }
+.badge.ok { background: #dcfce7; color: #166534; }
+.badge.out { background: #fee2e2; color: #991b1b; }
+.badge.negative { background: #dbeafe; color: #1e40af; }
+
+/* باکس‌های آپلود و فیلتر */
+.upload-box, .filter-box, .backup-box { background: white; padding: 1rem; border-radius: 1rem; box-shadow: 0 4px 15px rgba(15,23,42,0.08); margin-top: 0.8rem; }
+.upload-box h3, .filter-box h3, .backup-box h3 { font-size: 0.95rem; color: #1e293b; margin-bottom: 0.5rem; }
+.upload-box p, .backup-box p { font-size: 0.75rem; color: #64748b; margin-bottom: 0.7rem; }
+.upload-box input[type="file"], .backup-box input[type="file"] { width: 100%; padding: 0.5rem; border: 1.5px dashed #93c5fd; border-radius: 0.6rem; font-size: 0.8rem; margin-bottom: 0.6rem; }
+.upload-box button { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; padding: 0.7rem 1.2rem; border-radius: 0.6rem; font-weight: bold; cursor: pointer; font-size: 0.85rem; width: 100%; }
+.backup-btn { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; width: 100%; margin-bottom: 0.5rem; }
+.backup-btn:hover { background: #1e40af; }
+.restore-btn { background: #0d9488; color: white; width: 100%; }
+
+.filter-box label { display: block; font-size: 0.75rem; color: #64748b; margin-top: 0.5rem; margin-bottom: 0.3rem; }
+.filter-box input, .filter-box select { width: 100%; margin-bottom: 0.4rem; }
+.filter-box .reset-btn { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 0.6rem 1rem; border-radius: 0.6rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 0.5rem; }
+
+/* نمودار */
+.chart-box { background: white; padding: 1rem; border-radius: 1rem; box-shadow: 0 4px 15px rgba(15,23,42,0.08); margin-top: 0.8rem; height: 260px; }
+
+/* کارت هتل */
+.hotel-card { background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 15px rgba(15,23,42,0.08); margin-bottom: 0.8rem; border-right: 5px solid #2563eb; }
+.hotel-card h3 { color: #1e293b; font-size: 0.95rem; margin-bottom: 0.6rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+.hotel-card table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.hotel-card th { background: #f1f5f9; color: #334155; padding: 0.5rem; text-align: right; font-weight: bold; }
+.hotel-card td { padding: 0.5rem; border-bottom: 1px solid #f1f5f9; }
+.hotel-card .summary { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 2px solid #2563eb; font-size: 0.82rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; }
+.hotel-card .summary strong { color: #1e293b; }
+
+/* حاشیه سود */
+.margin-card { background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 15px rgba(15,23,42,0.08); margin-top: 0.8rem; }
+.margin-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
+.margin-row:last-child { border: none; }
+.margin-bar-bg { flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; margin: 0 10px; overflow: hidden; }
+.margin-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.margin-pct { font-weight: bold; font-size: 0.8rem; width: 50px; text-align: left; }
+
+/* تب‌ها */
+.tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.tab-btn { flex: 1; padding: 0.6rem; border: 2px solid #cbd5e1; background: white; border-radius: 0.6rem; font-weight: bold; cursor: pointer; color: #475569; transition: 0.2s; }
+.tab-btn.active { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border-color: #2563eb; }
+
+/* هشدار چشمک‌زن */
+@keyframes warningPulse { 0% { background-color: #fee2e2; } 50% { background-color: #ffffff; } 100% { background-color: #fee2e2; } }
+.blink-warning { animation: warningPulse 2s ease-in-out infinite; border: 2px solid #fecaca; }
+
+/* ---------- پس‌زمینه ماتریکس سفید (صفحه ورود) ---------- */
+.login-bg {
+  position: fixed; inset: 0; z-index: 1000;
+  background: #ffffff;
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+  overflow: hidden;
+}
+.matrix-bg {
+  position: absolute; inset: 0;
+  overflow: hidden; pointer-events: none; z-index: 0;
+}
+.matrix-bg span {
+  position: absolute;
+  color: #000000;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  opacity: 0.15;
+  animation: matrixFall linear infinite;
+  white-space: nowrap;
+}
+@keyframes matrixFall {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+/* کادر ورود (شیشه شفاف) */
+.login-box {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 2rem 1.5rem; border-radius: 1.8rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.3);
+  width: 100%; max-width: 340px; text-align: center;
+  position: relative; z-index: 1;
+  animation: boxIn 0.5s ease;
+  border: 1.5px solid rgba(255,255,255,0.35);
+}
+@keyframes boxIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.login-icon { font-size: 3rem; margin-bottom: 0.5rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+.login-box h2 { color: #1e293b; font-size: 1.2rem; margin-bottom: 0.4rem; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+.login-box p { font-size: 0.8rem; color: #475569; margin-bottom: 1rem; }
+.login-box input, .booth-select { 
+  width: 100%; padding: 0.9rem; border: 2px solid rgba(37,99,235,0.4); border-radius: 0.8rem; 
+  font-size: 1rem; text-align: center; margin-bottom: 0.7rem; outline: none; transition: 0.2s;
+  background: rgba(255,255,255,0.8);
+}
+.login-box input:focus, .booth-select:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.2); }
+.login-box button {
+  width: 100%; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none;
+  padding: 0.9rem; border-radius: 0.8rem; font-size: 1rem; font-weight: bold; cursor: pointer;
+  transition: 0.2s; box-shadow: 0 4px 15px rgba(37,99,235,0.4);
+}
+.login-box button:hover { background: linear-gradient(135deg, #1d4ed8, #1e40af); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.5); }
+.login-error { color: #b71c1c !important; font-size: 0.8rem; margin-top: 0.5rem; min-height: 1rem; font-weight: bold; }
+
+.master-box { border-top: 5px solid rgba(255,255,255,0.3); }
+
+/* امضای دو خطی */
+.signature {
+  position: absolute; bottom: 20px; left: 0; right: 0;
+  text-align: center; z-index: 2;
+  line-height: 1.8;
+}
+.signature .credit-text {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.signature strong {
+  display: block;
+  background: linear-gradient(90deg, #ff4081, #7c4dff, #00bcd4, #ff4081);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  animation: rainbowText 3s linear infinite;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  font-size: 1rem;
+}
+@keyframes rainbowText {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}

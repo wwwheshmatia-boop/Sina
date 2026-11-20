@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دستیار</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: Tahoma, sans-serif; }
+  body { background: #f0f2f5; min-height: 100vh; color: #1e293b; padding: 20px; }
+  h1 { font-size: 1.1rem; margin-bottom: 8px; }
+  .hint { color: #64748b; font-size: 13px; }
+  #fab {
+    position: fixed; top: 80px; left: 20px;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: white; font-size: 28px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(124,58,237,0.5);
+    z-index: 100; border: 2px solid rgba(255,255,255,0.5);
+  }
+  #overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 200; display: none;
+    align-items: center; justify-content: center;
+  }
+  #overlay.show { display: flex; }
+  #circle {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: white; font-size: 56px;
+    display: flex; align-items: center; justify-content: center;
+    animation: pulse 1.3s infinite;
+    border: 3px solid rgba(255,255,255,0.6);
+  }
+  @keyframes pulse {
+    0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(124,58,237,0.8); }
+    70%  { transform: scale(1.06); box-shadow: 0 0 0 35px rgba(124,58,237,0); }
+    100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(124,58,237,0); }
+  }
+  #panel {
+    background: white; border-radius: 16px; padding: 16px;
+    width: 90%; max-width: 420px; max-height: 70vh; overflow-y: auto;
+    display: none;
+  }
+  #panel.show { display: block; }
+  .msg { padding: 12px 14px; border-radius: 14px; margin-bottom: 8px; font-size: 14px; line-height: 1.7; }
+  .bot { background: #ede9fe; color: #4c1d95; }
+  .info { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+  .good { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+  .btn {
+    display: block; width: 100%; margin-top: 8px;
+    padding: 12px; border-radius: 10px; border: none;
+    font-size: 14px; font-weight: bold; cursor: pointer;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: white; text-align: right;
+  }
+  .btn.gray { background: #e2e8f0; color: #334155; }
+  .btn.red { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+  #close { float: left; background: none; border: none; font-size: 22px; cursor: pointer; color: #94a3b8; }
+</style>
+</head>
+<body>
+<h1>ماکت دستیار</h1>
+<p class="hint">روی دایره‌ی بنفش کلیک کن</p>
+<div id="fab" onclick="openA()">🤖</div>
+<div id="overlay" onclick="if(event.target.id==='overlay')closeA()">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:420px;">
+    <div id="circle">🤖</div>
+    <div id="panel">
+      <button id="close" onclick="closeA()">✖</button>
+      <div id="msgs"></div>
+      <div id="btns"></div>
+    </div>
+  </div>
+</div>
+<script>
+  function openA() {
+    document.getElementById('overlay').classList.add('show');
+    document.getElementById('circle').style.display = 'flex';
+    document.getElementById('panel').classList.remove('show');
+    document.getElementById('msgs').innerHTML = '';
+    document.getElementById('btns').innerHTML = '';
+    if (navigator.vibrate) navigator.vibrate([80,40,80,40,150]);
+    setTimeout(() => {
+      document.getElementById('circle').style.display = 'none';
+      document.getElementById('panel').classList.add('show');
+      msg('bot', 'سلام! 👋 من رابط هوشمند سیستمم. چه کمکی از دستم برمیاد؟');
+      setTimeout(() => {
+        msg('info', '📊 <b>وضعیت فعلی:</b><br>• ۱۵ خرید، ۸ فروش<br>• ۵ کد میوه<br>• ۳ خرید بدون کد<br>• ۲ فروش بدون اتصال');
+        buttons();
+      }, 1200);
+    }, 1400);
+  }
+  function closeA() { document.getElementById('overlay').classList.remove('show'); }
+  function msg(cls, txt) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + cls;
+    d.innerHTML = txt;
+    document.getElementById('msgs').appendChild(d);
+  }
+  function buttons() {
+    document.getElementById('btns').innerHTML =
+      '<button class="btn" onclick="act(\'کدگذاری\')">🏷️ کدگذاری خودکار</button>' +
+      '<button class="btn" onclick="act(\'اتصال\')">🔗 اتصال خودکار</button>' +
+      '<button class="btn gray" onclick="act(\'بررسی\')">🔍 بررسی نهایی</button>' +
+      '<button class="btn red" onclick="closeA()">❌ بستن</button>';
+  }
+  function act(name) {
+    msg('bot', 'در حال اجرای: <b>' + name + '</b>...');
+    setTimeout(() => {
+      if (name === 'بررسی') msg('good', '🎉 همه‌چیز اوکیه!<br>✅ خطا صفر<br>✅ موجودی درست<br>✅ کدها یکتا<br>✅ اتصال کامل');
+      else msg('good', '✅ ' + name + ' انجام شد.');
+    }, 600);
+  }
+</script>
+</body>
+</html>
